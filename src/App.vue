@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <h1>Sohai</h1>
+    <h1>Oplask</h1>
+    <SearchBar />
   </div>
 </template>
 
 <script>
-
+import SearchBar from '@/components/Search.vue'
 
 export default {
   name: 'App',
+  components: { SearchBar }
   
 }
 </script>
