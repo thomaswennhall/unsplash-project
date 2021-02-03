@@ -10,6 +10,7 @@
 import SearchBar from "@/components/Search.vue";
 import Gallery from "@/components/Gallery.vue";
 
+import * as API from "@/api/mockup";
 export default {
   name: "App",
   components: { SearchBar, Gallery },
@@ -18,6 +19,12 @@ export default {
     search(input) {
       console.log(input);
     },
+  },
+  created() {
+    const mockData = API.initApi(25);
+    console.log("MockData", mockData);
+    API.getNextPage();
+    API.getPreviousPage();
   },
 };
 </script>
