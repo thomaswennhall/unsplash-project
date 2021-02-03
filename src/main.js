@@ -1,11 +1,11 @@
 import Vue from "vue";
 import App from "./App.vue";
-import axios from "axios";
-import VueAxios from "axios";
+// import axios from "axios";
+// import VueAxios from "axios";
 
 Vue.config.productionTip = false;
 
-Vue.use(VueAxios, axios);
+// Vue.use(VueAxios, axios);
 
 new Vue({
   render: (h) => h(App),

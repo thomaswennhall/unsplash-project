@@ -7,7 +7,7 @@
 
 <script>
 import SearchBar from "@/components/Search.vue";
-
+import * as API from "@/api/mockup";
 export default {
   name: "App",
   components: { SearchBar },
@@ -16,6 +16,12 @@ export default {
     search(input) {
       console.log(input);
     },
+  },
+  created() {
+    const mockData = API.initApi(25);
+    console.log("MockData", mockData);
+    API.getNextPage();
+    API.getPreviousPage();
   },
 };
 </script>
