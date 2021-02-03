@@ -1,12 +1,12 @@
 <template>
   <article class="search-bar">
-    <form onsubmit="return false;">
+    <form v-on:submit.prevent="search">
       <input
         type="text"
-        placeholder="type something here..."
+        :placeholder="placeholder"
         v-model="input"
       />
-      <button @click="search">SEARCH</button>
+      <button>SEARCH</button>
     </form>
   </article>
 </template>
@@ -15,13 +15,16 @@
 export default {
   data() {
     return {
-      input: ""
+      input: "",
+      placeholder: "Type something here..."
     };
   },
 
   methods: {
     search() {
       this.$emit('search', this.input)
+      this.placeholder = this.input
+      this.input = ""
     }
   }
 };
