@@ -6,13 +6,12 @@
 </template>
 
 <script>
-import SearchBar from '@/components/Search.vue'
+import SearchBar from "@/components/Search.vue";
 
 export default {
-  name: 'App',
-  components: { SearchBar }
-  
-}
+  name: "App",
+  components: { SearchBar },
+};
 </script>
 
 <style lang="scss">
