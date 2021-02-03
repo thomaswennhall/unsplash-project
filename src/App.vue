@@ -9,11 +9,6 @@
 import SearchBar from "@/components/Search.vue";
 
 export default {
-<<<<<<< HEAD
-  name: "App",
-  components: { SearchBar },
-};
-=======
   name: 'App',
   components: { SearchBar },
 
@@ -24,7 +19,6 @@ export default {
   }
   
 }
->>>>>>> 8ac69220a8cadbc9b9c1908d3bc908e1495c3b7a
 </script>
 
 <style lang="scss">
