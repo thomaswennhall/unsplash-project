@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Oplask</h1>
-    <SearchBar />
+    <SearchBar v-on:search="search"/>
   </div>
 </template>
 
@@ -10,7 +10,13 @@ import SearchBar from '@/components/Search.vue'
 
 export default {
   name: 'App',
-  components: { SearchBar }
+  components: { SearchBar },
+
+  methods: {
+    search(input){
+      console.log(input);
+    }
+  }
   
 }
 </script>

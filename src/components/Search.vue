@@ -2,14 +2,12 @@
   <article class="search-bar">
     <form onsubmit="return false;">
       <input
-        id="search"
         type="text"
         placeholder="type something here..."
         v-model="input"
       />
-      <button @click="logInput">SEARCH</button>
+      <button @click="search">SEARCH</button>
     </form>
-    <p>{{ output }}</p>
   </article>
 </template>
 
@@ -17,14 +15,13 @@
 export default {
   data() {
     return {
-      input: "",
-      output: ""
+      input: ""
     };
   },
 
   methods: {
-    logInput() {
-      this.output = this.input
+    search() {
+      this.$emit('search', this.input)
     }
   }
 };
