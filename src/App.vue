@@ -2,15 +2,17 @@
   <div id="app">
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
+    <Gallery />
   </div>
 </template>
 
 <script>
 import SearchBar from "@/components/Search.vue";
+import Gallery from "@/components/Gallery.vue";
 
 export default {
   name: "App",
-  components: { SearchBar },
+  components: { SearchBar, Gallery },
 
   methods: {
     search(input) {
