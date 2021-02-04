@@ -6,8 +6,8 @@
       :image="image.urls.thumb"
     />
     <div class="buttons">
-        <button @click="prevPage">&#60;</button>
-        <button @click="nextPage">></button>
+      <button @click="prevPage">&#60;</button>
+      <button @click="nextPage">></button>
     </div>
   </section>
 </template>
@@ -25,12 +25,12 @@ export default {
   },
   methods: {
     nextPage() {
-        console.log("next");
+      this.$emit("nextPage");
     },
     prevPage() {
-        console.log('previous');
-    }
-  }
+      this.$emit("previousPage");
+    },
+  },
 };
 </script>
 
@@ -40,30 +40,30 @@ export default {
   padding: 2rem 0;
   margin: 0 auto;
 
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
-        .buttons{
-            position: fixed;
-            bottom: 50%;
-            width: 100%;
+  .buttons {
+    position: fixed;
+    bottom: 50%;
+    width: 100%;
 
-            display: flex;
-            justify-content: space-between;
-            button{
-                outline: none;
-                border: none;
-                background-color: transparent;
-                font-size: 2rem;
+    display: flex;
+    justify-content: space-between;
+    button {
+      outline: none;
+      border: none;
+      background-color: transparent;
+      font-size: 2rem;
 
-                &:hover{
-                    transform: scale(1.1);
-                }
-                &:active{
-                    transform: scale(0.9);         
-                }
-            }
-        }
+      &:hover {
+        transform: scale(1.1);
+      }
+      &:active {
+        transform: scale(0.9);
+      }
     }
+  }
+}
 </style>

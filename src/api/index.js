@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const test = ((axios) => {
+const API = ((axios) => {
   const pagination = {
     nextPage: 1,
     previousPage: 0,
@@ -8,19 +8,30 @@ const test = ((axios) => {
     perPage: 0,
   };
   const urls = {
-    baseUrl: `https://api.unsplash.com/photos/?client_id=${process.env.VUE_APP_API_KEY}`,
+    baseUrl: `https://api.unsplash.com`,
     currentUrl: "",
+    state: "default",
     queries: {
       perPage: "&per_page=",
       page: "&page=",
       search: "&query=",
     },
-    default: function() {
-      return `${this.baseUrl}${this.queries.perPage}${pagination.perPage}${this.queries.page}${pagination.nextPage}`;
+    default: function(nextPage) {
+      const cat =
+        this.state === "default"
+          ? `${this.baseUrl}/photos`
+          : `${this.baseUrl}/search`;
+      return cat.concat(
+        `/?client_id=${process.env.VUE_APP_API_KEY}${this.queries.perPage}${pagination.perPage}${this.queries.page}${nextPage}`
+      );
     },
-    searchQuery: function(searchValue) {
-      const defaultQuery = this.default();
-      return defaultQuery.concat(`${this.queries.search}${searchValue}`);
+    search: function(nextPage, searchValue) {
+      console.log("RUnning search query");
+      const defaultQuery = this.default(nextPage).concat(
+        `${this.queries.search}${searchValue}`
+      );
+      console.log(defaultQuery);
+      return defaultQuery;
     },
   };
 
@@ -49,16 +60,57 @@ const test = ((axios) => {
       return await this.baseQuery();
     },
     async baseQuery() {
-      urls.currentUrl = urls.default();
+      urls.currentUrl = urls[urls.state](pagination.nextPage);
       const data = await getData();
-      console.log(data);
+      console.log(data, "From live");
       initPagination(data["x-total"]);
       return buildObj(data.data);
     },
-    setNumPages() {
-      this.setNumPages();
+    async getNextPage(searchVal) {
+      pagination.nextPage++;
+      pagination.previousPage++;
+
+      if (pagination.nextPage > pagination.numPages) {
+        pagination.nextPage = 1;
+        pagination.previousPage = pagination.numPages;
+      } else if (pagination.previousPage > pagination.numPages) {
+        pagination.previousPage = 1;
+      }
+
+      urls.currentUrl = urls[urls.state](pagination.nextPage, searchVal);
+
+      const data = await getData();
+
+      return urls.state === "default"
+        ? buildObj(data.data)
+        : buildObj(data.data.photos.results);
+    },
+    async getPreviousPage(searchVal) {
+      pagination.nextPage--;
+      pagination.previousPage--;
+      if (pagination.previousPage === 0) {
+        pagination.nextPage = 1;
+        pagination.previousPage = pagination.numPages;
+      } else if (pagination.nextPage === 0) {
+        pagination.nextPage = pagination.numPages;
+      }
+
+      urls.currentUrl = urls[urls.state](pagination.previousPage, searchVal);
+      console.log(urls.currentUrl, "current live url from previous page");
+      const data = await getData();
+      return urls.state === "default"
+        ? buildObj(data.data)
+        : buildObj(data.data.photos.results);
+    },
+    async searchQuery(searchVal) {
+      urls.state = "search";
+      pagination.nextPage = 1;
+      urls.currentUrl = await urls[urls.state](pagination.nextPage, searchVal);
+      const data = await getData();
+      initPagination(data["x-total"]);
+      return buildObj(data.data.photos.results);
     },
   };
 })(axios);
 
-export default test;
+export default API;

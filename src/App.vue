@@ -2,8 +2,11 @@
   <div id="app">
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
-    <Gallery :images="getImages" />
-    <Lightbox/>
+    <Gallery
+      :images="getImages"
+      @nextPage="nextPage"
+      @previousPage="previousPage"
+    />
   </div>
 </template>
 
@@ -12,9 +15,7 @@ import SearchBar from "@/components/Search.vue";
 import Gallery from "@/components/Gallery.vue";
 import Lightbox from "@/components/Lightbox.vue";
 
-import * as API from "@/api/mockup";
-import test from "@/api";
-
+import API from "@/api";
 export default {
   name: "App",
   components: { SearchBar, Gallery, Lightbox },
@@ -26,21 +27,29 @@ export default {
   data() {
     return {
       images: [],
+      searchVal: "",
     };
   },
 
   methods: {
-    search(input) {
-      this.images = API.searchQuery(input);
+    async search(input) {
+      console.log(input);
+      this.searchVal = input;
+      this.images = await API.searchQuery(input);
       if (!this.images) {
         this.images = [];
         console.log(this.images);
       }
     },
     async initApi() {
-      this.images = await API.defaultQuery(25);
-      console.log(test)
-  
+      this.images = await API.init(25);
+    },
+    async nextPage() {
+      console.log("NEXT PAGE");
+      this.images = await API.getNextPage(this.searchVal);
+    },
+    async previousPage() {
+      this.images = await API.getPreviousPage(this.searchVal);
     },
   },
   created() {
