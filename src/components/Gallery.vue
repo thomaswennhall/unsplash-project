@@ -1,6 +1,11 @@
 <template>
   <section class="gallery">
-    <Thumbnail v-for="image in images" :key="image.id" :image="image" />
+    <Thumbnail
+      v-for="image in images"
+      :key="image.id"
+      :image="image"
+      @click.native="openLightbox(image.id)"
+    />
     <div class="buttons">
       <button @click="prevPage">&#60;</button>
       <button @click="nextPage">></button>
@@ -29,6 +34,9 @@ export default {
     },
     prevPage() {
       this.$emit("previousPage");
+    },
+    openLightbox(id) {
+      this.$emit("openLightbox", id);
     },
   },
 };
