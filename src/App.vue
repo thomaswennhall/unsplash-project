@@ -35,7 +35,9 @@ export default {
       }
     },
     async initApi() {
-      this.images = await test.init(25);
+      this.images = await API.defaultQuery(25);
+      console.log(test)
+  
     },
   },
   created() {
