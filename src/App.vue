@@ -7,6 +7,7 @@
       @nextPage="nextPage"
       @previousPage="previousPage"
     />
+    <Lightbox />
   </div>
 </template>
 
@@ -60,10 +61,10 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300;400&display=swap");
-*{
-  padding:0;
-  margin:0;
-  box-sizing:border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -72,7 +73,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  
 
   h1 {
     font-family: "Londrina Solid", Avenir, Helvetica, Arial, sans-serif;

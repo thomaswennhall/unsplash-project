@@ -48,8 +48,8 @@ const API = ((axios) => {
   const buildObj = (arr) => {
     const output = [];
     arr.forEach((obj) => {
-      const { urls, user, description, alt_description } = obj;
-      output.push({ urls, user, description, alt_description });
+      const { urls, user, description, alt_description, links } = obj;
+      output.push({ urls, user, description, alt_description, links });
     });
     return output;
   };
@@ -109,6 +109,9 @@ const API = ((axios) => {
       const data = await getData();
       initPagination(data["x-total"]);
       return buildObj(data.data.photos.results);
+    },
+    getNumPages() {
+      return pagination.numPages;
     },
   };
 })(axios);
