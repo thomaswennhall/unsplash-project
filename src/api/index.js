@@ -10,13 +10,14 @@ const test = ((axios) => {
   const urls = {
     baseUrl: `https://api.unsplash.com/photos/?client_id=${process.env.VUE_APP_API_KEY}`,
     currentUrl: "",
+    state: "default",
     queries: {
       perPage: "&per_page=",
       page: "&page=",
       search: "&query=",
     },
-    default: function() {
-      return `${this.baseUrl}${this.queries.perPage}${pagination.perPage}${this.queries.page}${pagination.nextPage}`;
+    default: function(nextPage) {
+      return `${this.baseUrl}${this.queries.perPage}${pagination.perPage}${this.queries.page}${nextPage}`;
     },
     searchQuery: function(searchValue) {
       const defaultQuery = this.default();
@@ -49,14 +50,42 @@ const test = ((axios) => {
       return await this.baseQuery();
     },
     async baseQuery() {
-      urls.currentUrl = urls.default();
+      urls.currentUrl = urls[urls.state](pagination.nextPage);
       const data = await getData();
-      console.log(data);
+      console.log(data, "From live");
       initPagination(data["x-total"]);
       return buildObj(data.data);
     },
-    setNumPages() {
-      this.setNumPages();
+    async getNextPage() {
+      pagination.nextPage++;
+      pagination.previousPage++;
+
+      if (pagination.nextPage > pagination.numPages) {
+        pagination.nextPage = 1;
+        pagination.previousPage = pagination.numPages;
+      } else if (pagination.previousPage > pagination.numPages) {
+        pagination.previousPage = 1;
+      }
+      console.log(urls.currentUrl, "current live url,from next page");
+
+      urls.currentUrl = urls[urls.state](pagination.nextPage);
+      const data = await getData();
+      return buildObj(data.data);
+    },
+    async getPreviousPage() {
+      pagination.nextPage--;
+      pagination.previousPage--;
+      if (pagination.previousPage === 0) {
+        pagination.nextPage = 1;
+        pagination.previousPage = pagination.numPages;
+      } else if (pagination.nextPage === 0) {
+        pagination.nextPage = pagination.numPages;
+      }
+
+      urls.currentUrl = urls[urls.state](pagination.previousPage);
+      console.log(urls.currentUrl, "current live url from previous page");
+      const data = await getData();
+      return buildObj(data.data);
     },
   };
 })(axios);

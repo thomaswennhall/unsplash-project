@@ -2,7 +2,11 @@
   <div id="app">
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
-    <Gallery :images="getImages" />
+    <Gallery
+      :images="getImages"
+      @nextPage="nextPage"
+      @previousPage="previousPage"
+    />
   </div>
 </template>
 
@@ -36,6 +40,13 @@ export default {
     },
     async initApi() {
       this.images = await test.init(25);
+    },
+    async nextPage() {
+      console.log("NEXT PAGE");
+      this.images = await test.getNextPage();
+    },
+    async previousPage() {
+      this.images = await test.getPreviousPage();
     },
   },
   created() {
