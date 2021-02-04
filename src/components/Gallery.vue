@@ -20,9 +20,6 @@ export default {
       required: true,
     },
   },
-  created() {
-    this.array = API.defaultQuery(25);
-  },
 };
 </script>
 
