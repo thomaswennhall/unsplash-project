@@ -3,7 +3,7 @@
     <Thumbnail
       v-for="image in images"
       :key="image.id"
-      :image="image.urls.thumb"
+      :image="image"
     />
     <div class="buttons">
       <button @click="prevPage">&#60;</button>

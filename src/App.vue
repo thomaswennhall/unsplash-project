@@ -79,6 +79,7 @@ export default {
     font-size: 3rem;
     font-weight: 400;
     letter-spacing: 5px;
+    margin-bottom: 2rem;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <article class="thumbnail">
-      <img :src="image" alt="">
+      <img :src="imageUrl" :alt="imageAlt">
   </article>
 </template>
 
@@ -8,8 +8,17 @@
 export default {
     props: {
         image: {
-            type: String,
+            type: Object,
             required: true
+        }
+    },
+
+    computed: {
+        imageUrl(){
+            return this.image.urls.thumb
+        },
+        imageAlt(){
+            return this.image.alt_description
         }
     }
 }
