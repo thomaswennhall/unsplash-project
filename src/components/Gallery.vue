@@ -23,6 +23,14 @@ export default {
       required: true,
     },
   },
+  methods: {
+    nextPage() {
+        console.log("next");
+    },
+    prevPage() {
+        console.log('previous');
+    }
+  }
 };
 </script>
 
