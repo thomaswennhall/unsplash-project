@@ -1,10 +1,6 @@
 <template>
   <section class="gallery">
-    <Thumbnail
-      v-for="image in images"
-      :key="image.id"
-      :image="image"
-    />
+    <Thumbnail v-for="image in images" :key="image.id" :image="image" />
     <div class="buttons">
       <button @click="prevPage">&#60;</button>
       <button @click="nextPage">></button>
@@ -21,6 +17,10 @@ export default {
     images: {
       type: Array,
       required: true,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
