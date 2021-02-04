@@ -14,7 +14,7 @@
 import SearchBar from "@/components/Search.vue";
 import Gallery from "@/components/Gallery.vue";
 
-import test from "@/api";
+import API from "@/api";
 export default {
   name: "App",
   components: { SearchBar, Gallery },
@@ -34,21 +34,21 @@ export default {
     async search(input) {
       console.log(input);
       this.searchVal = input;
-      this.images = await test.searchQuery(input);
+      this.images = await API.searchQuery(input);
       if (!this.images) {
         this.images = [];
         console.log(this.images);
       }
     },
     async initApi() {
-      this.images = await test.init(25);
+      this.images = await API.init(25);
     },
     async nextPage() {
       console.log("NEXT PAGE");
-      this.images = await test.getNextPage(this.searchVal);
+      this.images = await API.getNextPage(this.searchVal);
     },
     async previousPage() {
-      this.images = await test.getPreviousPage(this.searchVal);
+      this.images = await API.getPreviousPage(this.searchVal);
     },
   },
   created() {

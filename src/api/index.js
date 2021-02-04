@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const test = ((axios) => {
+const API = ((axios) => {
   const pagination = {
     nextPage: 1,
     previousPage: 0,
@@ -113,4 +113,4 @@ const test = ((axios) => {
   };
 })(axios);
 
-export default test;
+export default API;
