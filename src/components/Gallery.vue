@@ -4,6 +4,7 @@
       v-for="image in images"
       :key="image.id"
       :image="image"
+      @click.native="openLightbox(image.id)"
     />
     <div class="buttons">
       <button @click="prevPage">&#60;</button>
@@ -30,6 +31,9 @@ export default {
     prevPage() {
       this.$emit("previousPage");
     },
+    openLightbox(id) {
+        this.$emit('openLightbox', id)
+    }
   },
 };
 </script>

@@ -6,8 +6,14 @@
       :images="getImages"
       @nextPage="nextPage"
       @previousPage="previousPage"
+      @openLightbox="toggleLightbox"
     />
-    <Lightbox />
+    <Lightbox 
+      v-if="showLightbox"
+      :images="getImages" 
+      :id="imageId" 
+      @closeLightbox="toggleLightbox"
+    />
   </div>
 </template>
 
@@ -29,6 +35,8 @@ export default {
     return {
       images: [],
       searchVal: "",
+      showLightbox: false,
+      imageId: ""
     };
   },
 
@@ -52,6 +60,16 @@ export default {
     async previousPage() {
       this.images = await API.getPreviousPage(this.searchVal);
     },
+
+    toggleLightbox(id){
+      if(this.showLightbox){
+        this.imageId = ''
+        this.showLightbox = false
+      } else{
+        this.showLightbox = true
+        this.imageId = id
+      }
+    }
   },
   created() {
     this.initApi();
