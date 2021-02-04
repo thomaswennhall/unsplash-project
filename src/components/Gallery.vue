@@ -1,9 +1,9 @@
 <template>
   <section class="gallery">
-    <Thumbnail 
-        v-for="obj in array" 
-        :key="obj.id"
-        :image="obj.urls.thumb"
+    <Thumbnail
+      v-for="image in images"
+      :key="image.id"
+      :image="image.urls.thumb"
     />
     <div class="buttons">
         <button @click="prevPage">&#60;</button>
@@ -13,36 +13,24 @@
 </template>
 
 <script>
-import Thumbnail from '@/components/Thumbnail.vue'
-import * as API from "@/api/mockup";
+import Thumbnail from "@/components/Thumbnail.vue";
 
 export default {
-    components: { Thumbnail },
-
-    data(){ return {
-        array: []      
-    }},
-
-    methods: {
-        nextPage(){
-            this.array = API.getNextPage()
-        },
-        prevPage(){
-            this.array = API.getPreviousPage()
-        }
+  components: { Thumbnail },
+  props: {
+    images: {
+      type: Array,
+      required: true,
     },
-
-    created() {
-        this.array = API.initApi(25);
-    }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-    .gallery{
-        max-width: 1000px;
-        padding: 2rem 0;
-        margin: 0 auto;
+.gallery {
+  max-width: 1000px;
+  padding: 2rem 0;
+  margin: 0 auto;
 
         display: flex;
         flex-wrap: wrap;

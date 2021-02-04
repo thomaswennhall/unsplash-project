@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
-    <Gallery />
+    <Gallery :images="getImages" />
   </div>
 </template>
 
@@ -11,21 +11,35 @@ import SearchBar from "@/components/Search.vue";
 import Gallery from "@/components/Gallery.vue";
 
 import * as API from "@/api/mockup";
+import test from "@/api";
 export default {
   name: "App",
   components: { SearchBar, Gallery },
+  computed: {
+    getImages() {
+      return this.images;
+    },
+  },
+  data() {
+    return {
+      images: [],
+    };
+  },
 
   methods: {
     search(input) {
-      console.log(input);
+      this.images = API.searchQuery(input);
+      if (!this.images) {
+        this.images = [];
+        console.log(this.images);
+      }
+    },
+    async initApi() {
+      this.images = await test.init(25);
     },
   },
-
   created() {
-    const mockData = API.initApi(25);
-    console.log("MockData", mockData);
-    API.getNextPage();
-    API.getPreviousPage();
+    this.initApi();
   },
 };
 </script>

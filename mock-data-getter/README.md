@@ -26,5 +26,5 @@ API_ACCESS_KEY in queries will be replace with your API_ACCESS_KEY (dfaf9a8f09a8
 
 ### Run the script
 ```
-npm run 
+npm run start
 ```
