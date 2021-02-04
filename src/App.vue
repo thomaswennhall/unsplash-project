@@ -3,18 +3,21 @@
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
     <Gallery :images="getImages" />
+    <Lightbox/>
   </div>
 </template>
 
 <script>
 import SearchBar from "@/components/Search.vue";
 import Gallery from "@/components/Gallery.vue";
+import Lightbox from "@/components/Lightbox.vue";
 
 import * as API from "@/api/mockup";
 import test from "@/api";
+
 export default {
   name: "App",
-  components: { SearchBar, Gallery },
+  components: { SearchBar, Gallery, Lightbox },
   computed: {
     getImages() {
       return this.images;
@@ -48,7 +51,11 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300;400&display=swap");
-
+*{
+  padding:0;
+  margin:0;
+  box-sizing:border-box;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -56,7 +63,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  padding: 2rem;
+  
 
   h1 {
     font-family: "Londrina Solid", Avenir, Helvetica, Arial, sans-serif;
