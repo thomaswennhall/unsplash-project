@@ -20,6 +20,7 @@ export default {
       console.log(input);
     },
   },
+
   created() {
     const mockData = API.initApi(25);
     console.log("MockData", mockData);
@@ -39,6 +40,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  padding: 2rem;
 
   h1 {
     font-family: "Londrina Solid", Avenir, Helvetica, Arial, sans-serif;
