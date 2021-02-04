@@ -10,7 +10,6 @@
 
 <script>
 import Thumbnail from "@/components/Thumbnail.vue";
-import * as API from "@/api/mockup";
 
 export default {
   components: { Thumbnail },
