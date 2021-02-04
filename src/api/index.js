@@ -48,9 +48,10 @@ const API = ((axios) => {
   const buildObj = (arr) => {
     const output = [];
     arr.forEach((obj) => {
-      const { urls, user, description, alt_description, links } = obj;
-      output.push({ urls, user, description, alt_description, links });
+      const { id, urls, user, description, alt_description, links } = obj;
+      output.push({ id, urls, user, description, alt_description, links });
     });
+    console.log(output, "From live");
     return output;
   };
 
@@ -62,7 +63,6 @@ const API = ((axios) => {
     async baseQuery() {
       urls.currentUrl = urls[urls.state](pagination.nextPage);
       const data = await getData();
-      console.log(data, "From live");
       initPagination(data["x-total"]);
       return buildObj(data.data);
     },
