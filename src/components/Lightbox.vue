@@ -82,8 +82,20 @@ export default {
     background-color: transparent;
     border: none;
 
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+
     &:hover{
       transform: scale(1.1);
+    }
+
+    &.close{
+      position: fixed;
+      top: 4.2rem;
+      left: 4.2rem;
+      font-size: 2rem;
+      background-color: transparent;
     }
   }
 }
