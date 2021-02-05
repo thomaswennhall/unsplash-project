@@ -2,15 +2,27 @@
   <div class="wrapper">
     <article class="lightbox">
       <div class="action-panel">
-        <span class="material-icons icon close" @click="closeLightbox">close_fullscreen</span>
-        <div class="favorite">
-          <span class="material-icons icon">favorite</span>
-        </div>
+        <span class="material-icons icon close" @click="closeLightbox"
+          >close_fullscreen
+        </span>
+        <Favorite :imageObj="getImageObj"/>
         <a class="material-icons icon" :href="getDownloadLink">download</a>
       </div>
-      <img :src="getImage" alt="" />
+      <div class="image-container">
+        <img :src="getImage" alt="" />
+      </div>
       <div class="information-panel">
-        <p>{{ getImageCreator.first_name }} {{ getImageCreator.last_name }}</p>
+        <p>
+          Creator: {{ getImageCreator.first_name }}
+          {{ getImageCreator.last_name }}
+        </p>
+        <a
+          v-if="getImageCreator.portfolio_url"
+          class="material-icons icon"
+          :href="getImageCreator.portfolio_url"
+          target="_blank"
+          >link
+        </a>
       </div>
     </article>
     <div class="buttons">
@@ -23,19 +35,22 @@
 </template>
 
 <script>
+import Favorite from '@/components/Favorite.vue'
+
 export default {
+  components: { Favorite },
   props: {
     images: {
-      type: Array,
+      type: Array
     },
     id: {
-      type: String,
-    },
+      type: String
+    }
   },
 
   data() {
     return {
-      imageIndex: 0,
+      imageIndex: 0
     };
   },
 
@@ -45,11 +60,15 @@ export default {
     },
 
     getDownloadLink() {
-      return this.images[this.imageIndex].links.download
+      return this.images[this.imageIndex].links.download;
     },
 
     getImageCreator() {
-      return this.images[this.imageIndex].user
+      return this.images[this.imageIndex].user;
+    },
+
+    getImageObj() {
+      return this.images[this.imageIndex]
     }
   },
 
@@ -63,6 +82,7 @@ export default {
       } else {
         this.imageIndex++;
       }
+
     },
     prevImage() {
       if (this.imageIndex == 0) {
@@ -70,43 +90,58 @@ export default {
       } else {
         this.imageIndex--;
       }
-    },
+    }
   },
 
   created() {
-    const imageObj = this.images.find((obj) => obj.id == this.id);
+    const imageObj = this.images.find(obj => obj.id == this.id);
     this.imageIndex = this.images.indexOf(imageObj);
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .wrapper {
-    position: fixed;
-    top: 0%;
-    width: 100%;
-    height: 100%;
-    background-color: rgba($color: #000000, $alpha: 0.7);
-    z-index: 1;
+  position: fixed;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.7);
+  z-index: 1;
 
-    display: grid;
-    place-items: center;
+  display: grid;
+  place-items: center;
+
+  a{
+    text-decoration: none;
+  }
 
   .lightbox {
-    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.6);
-    
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    .action-panel, .information-panel{
-      width: 75%;
+    max-height: 90vh;
+    max-width: 90vw;
+
+    @media screen and (min-width: 800px) {
+      max-width: 55vw;
+    }
+
+    .action-panel,
+    .information-panel {
+      width: 90%;
       margin: 0 auto;
       background-color: rgba(201, 201, 201, 0.8);
 
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 0.2rem 1.4rem;
+
+      @media screen and (min-width: 800px) {
+        max-width: 80%;
+      }
 
       .icon {
         font-size: 1.5rem;
@@ -119,53 +154,39 @@ export default {
           transition: all 200ms ease;
         }
       }
-
-      .favorite {
-      width: 2rem;
-      height: 2rem;
-      }
     }
 
-    img {
-      max-width: 75%;
-      max-height: 90%;
+    .image-container {
+      min-width: 80%;
+      max-width: 90%;
       margin: 0;
-      /* z-index: 100; */
+
+      overflow-y: auto;
+
+      @media screen and (min-width: 800px) {
+        max-width: 80%;
+      }
+
+      img {
+        max-width: 100%;
+      }
     }
-
-    /* button {
-      z-index: 100;
-
-      outline: none;
-      background-color: transparent;
-      border: none;
-
-      color: white;
-      font-size: 1.2rem;
-      font-weight: 500;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-
-      &.close {
-        position: fixed;
-        top: 4.2rem;
-        left: 4.2rem;
-        font-size: 2rem;
-        background-color: transparent;
-      }
-    } */
   }
   .buttons {
     position: absolute;
-    top: 50%;
+    bottom: 5%;
     left: 2.5%;
     width: 95%;
     margin: 0 auto;
     z-index: 9999;
     display: flex;
     justify-content: space-between;
+
+    @media screen and (min-width: 800px) {
+      bottom: auto;
+      top: 50%;
+    }
+
     button {
       outline: none;
       border: none;

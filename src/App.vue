@@ -2,6 +2,7 @@
   <div id="app">
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
+    <span class="material-icons" @click="toggleFavorites">favorite</span>
     <Gallery
       :images="getImages"
       @nextPage="nextPage"
@@ -72,9 +73,17 @@ export default {
         this.imageId = id;
       }
     },
+
+    toggleFavorites() {
+      this.images = this.$root.favorites
+    }
   },
   created() {
     this.initApi();
+
+    if(localStorage.getItem("favorite-images")){
+      this.$root.favorites = JSON.parse(localStorage.getItem("favorite-images"))
+    }
   },
 };
 </script>
