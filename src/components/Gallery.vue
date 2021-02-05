@@ -1,11 +1,13 @@
 <template>
-  <section class="gallery">
-    <Thumbnail
-      v-for="image in images"
-      :key="image.id"
-      :image="image"
-      @click.native="openLightbox(image.id)"
-    />
+  <div class="wrapper">
+    <section class="gallery">
+      <Thumbnail
+        v-for="image in images"
+        :key="image.id"
+        :image="image"
+        @click.native="openLightbox(image.id)"
+      />
+    </section>
     <div class="buttons">
       <button @click="prevPage" class="material-icons reversed">
         play_arrow
@@ -14,7 +16,7 @@
         play_arrow
       </button>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -47,19 +49,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.gallery {
-  max-width: 1000px;
-  padding: 2rem 0;
-  margin: 0 auto;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-
+.wrapper {
+  .gallery {
+    max-width: 1050px;
+    padding: 2rem 0;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   .buttons {
     position: sticky;
     bottom: 50%;
-    width: 100%;
+    width: 50%;
+    margin: 0 auto;
 
     display: flex;
     justify-content: space-between;

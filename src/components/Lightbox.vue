@@ -73,7 +73,7 @@ export default {
 
   img {
     max-width: 90%;
-    max-height: 80%;
+    max-height: 90%;
     z-index: 100;
     box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.6);
   }
