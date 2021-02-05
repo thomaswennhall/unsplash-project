@@ -1,7 +1,9 @@
 <template>
-  <article class="lightbox" @click="closeLightbox">
-    <img :src="getImage" alt="" />
-
+  <article class="lightbox">
+    <button class="close" @click="closeLightbox">X</button>
+    <button class="prev-button" @click="prevImage">PREVIOUS PHOTO</button>
+    <img :src="getImageIndex" alt="" />
+    <button class="next-button" @click="nextImage">NEXT PHOTO</button>
     <div class="favorite">
       <span class="material-icons icon">favorite</span>
     </div>
@@ -19,13 +21,15 @@ export default {
     },
   },
 
-  computed: {
-    getImageObj() {
-      return this.images.find((obj) => obj.id == this.id);
-    },
+  data() {
+    return {
+      imageIndex: 0,
+    };
+  },
 
-    getImage() {
-      return this.getImageObj.urls.regular;
+  computed: {
+    getImageIndex() {
+      return this.images[this.imageIndex].urls.regular;
     },
   },
 
@@ -33,6 +37,25 @@ export default {
     closeLightbox() {
       this.$emit("closeLightbox");
     },
+    nextImage() {
+      if (this.imageIndex == this.images.length - 1) {
+        this.imageIndex = 0;
+      } else {
+        this.imageIndex++;
+      }
+    },
+    prevImage() {
+      if (this.imageIndex == 0) {
+        this.imageIndex = this.images.length - 1;
+      } else {
+        this.imageIndex--;
+      }
+    },
+  },
+
+  created() {
+    const imageObj = this.images.find((obj) => obj.id == this.id);
+    this.imageIndex = this.images.indexOf(imageObj);
   },
 };
 </script>
@@ -79,6 +102,30 @@ export default {
         border-radius: 4px;
         margin-top: 0.5rem;
       }
+    }
+  }
+
+  button {
+    z-index: 100;
+
+    outline: none;
+    background-color: transparent;
+    border: none;
+
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.close {
+      position: fixed;
+      top: 4.2rem;
+      left: 4.2rem;
+      font-size: 2rem;
+      background-color: transparent;
     }
   }
 }
