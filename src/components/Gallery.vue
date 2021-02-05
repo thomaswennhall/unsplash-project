@@ -50,19 +50,26 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
+  max-width: 95vw;
+  margin: 0 auto;
+
   .gallery {
-    max-width: 1050px;
+    max-width: 1150px;
     padding: 2rem 0;
     margin: 0 auto;
-    position: relative;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
+
+    @media screen and (min-width: 800px){
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
   .buttons {
     position: sticky;
     bottom: 50%;
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
 
     display: flex;

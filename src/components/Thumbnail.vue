@@ -39,7 +39,8 @@ export default {
   position: relative;
   margin: 0.2rem 0.2rem;
   img {
-    max-height: 250px;
+    /* max-height: 250px; */
+    
     max-width: 200px;
     box-shadow: -1px 0px 2px 1px rgba(0, 0, 0, 0.3);
     &:hover {

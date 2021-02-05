@@ -1,10 +1,16 @@
 <template>
   <div class="wrapper">
     <article class="lightbox">
-      <button class="close" @click="closeLightbox">X</button>
-      <img :src="getImageIndex" alt="" />
-      <div class="favorite">
-        <span class="material-icons icon">favorite</span>
+      <div class="action-panel">
+        <span class="material-icons icon close" @click="closeLightbox">close_fullscreen</span>
+        <div class="favorite">
+          <span class="material-icons icon">favorite</span>
+        </div>
+        <a class="material-icons icon" :href="getDownloadLink">download</a>
+      </div>
+      <img :src="getImage" alt="" />
+      <div class="information-panel">
+        <p>{{ getImageCreator.first_name }} {{ getImageCreator.last_name }}</p>
       </div>
     </article>
     <div class="buttons">
@@ -34,9 +40,17 @@ export default {
   },
 
   computed: {
-    getImageIndex() {
+    getImage() {
       return this.images[this.imageIndex].urls.regular;
     },
+
+    getDownloadLink() {
+      return this.images[this.imageIndex].links.download
+    },
+
+    getImageCreator() {
+      return this.images[this.imageIndex].user
+    }
   },
 
   methods: {
@@ -68,47 +82,55 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-  .lightbox {
     position: fixed;
     top: 0%;
     width: 100%;
     height: 100%;
     background-color: rgba($color: #000000, $alpha: 0.7);
     z-index: 1;
+
     display: grid;
     place-items: center;
 
-    img {
-      max-width: 90%;
-      max-height: 90%;
-      z-index: 100;
-      box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.6);
-    }
-    .favorite {
-      position: sticky;
-      background-color: rgba(255, 255, 255, 0.5);
-      border-radius: 4px;
-      width: 2rem;
-      height: 2rem;
+  .lightbox {
+    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.6);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .action-panel, .information-panel{
+      width: 75%;
+      margin: 0 auto;
+      background-color: rgba(201, 201, 201, 0.8);
+
       display: flex;
-      justify-content: center;
-      align-content: center;
+      justify-content: space-between;
+      padding: 0.2rem 1.4rem;
+
       .icon {
         font-size: 1.5rem;
         color: #222;
-        text-shadow: -1px 1px #000;
         cursor: pointer;
         margin-top: 0.2rem;
         &:hover {
-          transform: scale(2);
-          background-color: #222;
+          transform: scale(1.2);
           color: #e46464;
           transition: all 200ms ease;
-          z-index: 9999;
-          border-radius: 4px;
-          margin-top: 0.5rem;
         }
       }
+
+      .favorite {
+      width: 2rem;
+      height: 2rem;
+      }
+    }
+
+    img {
+      max-width: 75%;
+      max-height: 90%;
+      margin: 0;
+      /* z-index: 100; */
     }
 
     /* button {
@@ -138,8 +160,8 @@ export default {
   .buttons {
     position: absolute;
     top: 50%;
-    right: 15%;
-    width: 70%;
+    left: 2.5%;
+    width: 95%;
     margin: 0 auto;
     z-index: 9999;
     display: flex;
