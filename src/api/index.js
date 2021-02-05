@@ -26,17 +26,16 @@ const API = ((axios) => {
       );
     },
     search: function(nextPage, searchValue) {
-      console.log("RUnning search query");
       const defaultQuery = this.default(nextPage).concat(
         `${this.queries.search}${searchValue}`
       );
-      console.log(defaultQuery);
       return defaultQuery;
     },
   };
 
   const getData = async () => {
     const response = await axios.get(urls.currentUrl);
+    console.log(response);
     return { data: response.data, "x-total": response.headers["x-total"] };
   };
 
@@ -54,6 +53,31 @@ const API = ((axios) => {
     console.log(output, "From live");
     return output;
   };
+  const nextIteration = (searchVal) => {
+    pagination.nextPage++;
+    pagination.previousPage++;
+
+    if (pagination.nextPage > pagination.numPages) {
+      pagination.nextPage = 1;
+      pagination.previousPage = pagination.numPages;
+    } else if (pagination.previousPage > pagination.numPages) {
+      pagination.previousPage = 1;
+    }
+
+    urls.currentUrl = urls[urls.state](pagination.nextPage, searchVal);
+  };
+  const previousIteration = (searchVal) => {
+    pagination.nextPage--;
+    pagination.previousPage--;
+    if (pagination.previousPage === 0) {
+      pagination.nextPage = 1;
+      pagination.previousPage = pagination.numPages;
+    } else if (pagination.nextPage === 0) {
+      pagination.nextPage = pagination.numPages;
+    }
+
+    urls.currentUrl = urls[urls.state](pagination.previousPage, searchVal);
+  };
 
   return {
     async init(perPage) {
@@ -67,17 +91,7 @@ const API = ((axios) => {
       return buildObj(data.data);
     },
     async getNextPage(searchVal) {
-      pagination.nextPage++;
-      pagination.previousPage++;
-
-      if (pagination.nextPage > pagination.numPages) {
-        pagination.nextPage = 1;
-        pagination.previousPage = pagination.numPages;
-      } else if (pagination.previousPage > pagination.numPages) {
-        pagination.previousPage = 1;
-      }
-
-      urls.currentUrl = urls[urls.state](pagination.nextPage, searchVal);
+      nextIteration(searchVal);
 
       const data = await getData();
 
@@ -86,17 +100,7 @@ const API = ((axios) => {
         : buildObj(data.data.photos.results);
     },
     async getPreviousPage(searchVal) {
-      pagination.nextPage--;
-      pagination.previousPage--;
-      if (pagination.previousPage === 0) {
-        pagination.nextPage = 1;
-        pagination.previousPage = pagination.numPages;
-      } else if (pagination.nextPage === 0) {
-        pagination.nextPage = pagination.numPages;
-      }
-
-      urls.currentUrl = urls[urls.state](pagination.previousPage, searchVal);
-      console.log(urls.currentUrl, "current live url from previous page");
+      previousIteration(searchVal);
       const data = await getData();
       return urls.state === "default"
         ? buildObj(data.data)

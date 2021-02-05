@@ -8,12 +8,14 @@
       @previousPage="previousPage"
       @openLightbox="toggleLightbox"
     />
-    <Lightbox 
-      v-if="showLightbox"
-      :images="getImages" 
-      :id="imageId" 
-      @closeLightbox="toggleLightbox"
-    />
+    <transition name="modal">
+      <Lightbox
+        v-if="showLightbox"
+        :images="getImages"
+        :id="imageId"
+        @closeLightbox="toggleLightbox"
+      />
+    </transition>
   </div>
 </template>
 
@@ -36,7 +38,7 @@ export default {
       images: [],
       searchVal: "",
       showLightbox: false,
-      imageId: ""
+      imageId: "",
     };
   },
 
@@ -61,15 +63,15 @@ export default {
       this.images = await API.getPreviousPage(this.searchVal);
     },
 
-    toggleLightbox(id){
-      if(this.showLightbox){
-        this.imageId = ''
-        this.showLightbox = false
-      } else{
-        this.showLightbox = true
-        this.imageId = id
+    toggleLightbox(id) {
+      if (this.showLightbox) {
+        this.imageId = "";
+        this.showLightbox = false;
+      } else {
+        this.showLightbox = true;
+        this.imageId = id;
       }
-    }
+    },
   },
   created() {
     this.initApi();
@@ -98,6 +100,16 @@ export default {
     font-weight: 400;
     letter-spacing: 5px;
     margin-bottom: 2rem;
+  }
+
+  .modal-enter-active,
+  .modal-leave-active {
+    /* transition: opacity 0.5s; */
+    transition: opacity 0.5s ease;
+  }
+  .modal-enter,
+  .modal-leave-to {
+    opacity: 0;
   }
 }
 </style>

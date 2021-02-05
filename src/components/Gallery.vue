@@ -7,8 +7,12 @@
       @click.native="openLightbox(image.id)"
     />
     <div class="buttons">
-      <button @click="prevPage">&#60;</button>
-      <button @click="nextPage">></button>
+      <button @click="prevPage" class="material-icons reversed">
+        play_arrow
+      </button>
+      <button @click="nextPage" class="material-icons ">
+        play_arrow
+      </button>
     </div>
   </section>
 </template>
@@ -47,13 +51,13 @@ export default {
   max-width: 1000px;
   padding: 2rem 0;
   margin: 0 auto;
-
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
   .buttons {
-    position: fixed;
+    position: sticky;
     bottom: 50%;
     width: 100%;
 
@@ -64,12 +68,27 @@ export default {
       border: none;
       background-color: transparent;
       font-size: 2rem;
+      background: linear-gradient(110deg, purple, 65%, red);
+      border-radius: 50%;
+      min-width: 4rem;
+      min-height: 4rem;
+      color: #fff;
 
       &:hover {
-        transform: scale(1.1);
+        transform: scale(1.2);
+        background: linear-gradient(110deg, red, 65%, purple);
+        transition: all 0.5s ease;
       }
       &:active {
         transform: scale(0.9);
+      }
+    }
+    .reversed {
+      transform: rotate(180deg);
+      &:hover {
+        transform: scale(1.2) rotate(180deg);
+        background: linear-gradient(110deg, red, 65%, purple);
+        transition: all 0.5s ease;
       }
     }
   }
