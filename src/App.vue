@@ -2,7 +2,11 @@
   <div id="app">
     <h1>Oplask</h1>
     <SearchBar v-on:search="search" />
-    <span class="material-icons" @click="toggleFavorites">favorite</span>
+    <span
+      :class="'material-icons change-to-favorite' + ' ' + setFavoriteActive"
+      @click="toggleFavorites"
+      >favorite</span
+    >
     <Gallery
       :images="getImages"
       @nextPage="nextPage"
@@ -33,6 +37,9 @@ export default {
     getImages() {
       return this.images;
     },
+    setFavoriteActive() {
+      return this.favoriteState ? "change-to-favorite-active" : "";
+    },
   },
   data() {
     return {
@@ -40,12 +47,13 @@ export default {
       searchVal: "",
       showLightbox: false,
       imageId: "",
+      favoriteState: false,
+      cacheLiveState: null,
     };
   },
 
   methods: {
     async search(input) {
-      console.log(input);
       this.searchVal = input;
       this.images = await API.searchQuery(input);
       if (!this.images) {
@@ -75,14 +83,24 @@ export default {
     },
 
     toggleFavorites() {
-      this.images = this.$root.favorites
-    }
+      if (!this.favoriteState) {
+        this.cacheLiveState = this.images;
+        this.images = this.$root.favorites;
+      } else {
+        this.images = this.cacheLiveState;
+        this.cacheLiveState = null;
+      }
+
+      this.favoriteState = !this.favoriteState;
+    },
   },
   created() {
     this.initApi();
 
-    if(localStorage.getItem("favorite-images")){
-      this.$root.favorites = JSON.parse(localStorage.getItem("favorite-images"))
+    if (localStorage.getItem("favorite-images")) {
+      this.$root.favorites = JSON.parse(
+        localStorage.getItem("favorite-images")
+      );
     }
   },
 };
@@ -103,6 +121,25 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 
+  .change-to-favorite {
+    position: fixed;
+    top: 2%;
+    right: 1%;
+    font-size: 6rem;
+    color: #222;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      color: #e46464;
+      transition: all 0.5s ease;
+    }
+
+    @media screen and (min-width: 1000px) {
+      right: 25%;
+    }
+  }
+
   h1 {
     font-family: "Londrina Solid", Avenir, Helvetica, Arial, sans-serif;
     font-size: 3rem;
@@ -119,6 +156,9 @@ export default {
   .modal-enter,
   .modal-leave-to {
     opacity: 0;
+  }
+  .change-to-favorite-active {
+    color: #e46464;
   }
 }
 </style>
