@@ -29,13 +29,12 @@ import SearchBar from "@/components/Search.vue";
 import Gallery from "@/components/Gallery.vue";
 import Lightbox from "@/components/Lightbox.vue";
 
-import API from "@/api";
 export default {
   name: "App",
   components: { SearchBar, Gallery, Lightbox },
   computed: {
     getImages() {
-      return this.images;
+      return this.$store.getters.getImages(this.favoriteState);
     },
     setFavoriteActive() {
       return this.favoriteState ? "change-to-favorite-active" : "";
@@ -43,7 +42,6 @@ export default {
   },
   data() {
     return {
-      images: [],
       searchVal: "",
       showLightbox: false,
       imageId: "",
@@ -53,23 +51,16 @@ export default {
   },
 
   methods: {
-    async search(input) {
+    search(input) {
       this.searchVal = input;
-      this.images = await API.searchQuery(input);
-      if (!this.images) {
-        this.images = [];
-        console.log(this.images);
-      }
+      this.$store.dispatch("searchQuery", this.searchVal);
     },
-    async initApi() {
-      this.images = await API.init(25);
-    },
-    async nextPage() {
+    nextPage() {
       console.log("NEXT PAGE");
-      this.images = await API.getNextPage(this.searchVal);
+      this.$store.dispatch("nextPage", this.searchVal);
     },
-    async previousPage() {
-      this.images = await API.getPreviousPage(this.searchVal);
+    previousPage() {
+      this.$store.dispatch("previousPage", this.searchVal);
     },
 
     toggleLightbox(id) {
@@ -95,13 +86,8 @@ export default {
     },
   },
   created() {
-    this.initApi();
-
-    if (localStorage.getItem("favorite-images")) {
-      this.$root.favorites = JSON.parse(
-        localStorage.getItem("favorite-images")
-      );
-    }
+    this.$store.dispatch("initApp", 25);
+    this.$store.dispatch("initFavoriteImagesLs");
   },
 };
 </script>
