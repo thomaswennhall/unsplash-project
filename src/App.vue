@@ -46,7 +46,6 @@ export default {
       showLightbox: false,
       imageId: "",
       favoriteState: false,
-      cacheLiveState: null,
     };
   },
 
@@ -74,14 +73,6 @@ export default {
     },
 
     toggleFavorites() {
-      if (!this.favoriteState) {
-        this.cacheLiveState = this.images;
-        this.images = this.$root.favorites;
-      } else {
-        this.images = this.cacheLiveState;
-        this.cacheLiveState = null;
-      }
-
       this.favoriteState = !this.favoriteState;
     },
   },

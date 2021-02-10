@@ -16,6 +16,10 @@ export default new Vuex.Store({
       state.favoriteImages.some((image) => image.id === imageObj.id)
         ? "is-favorite"
         : "",
+    getImageById: (state) => (favoriteState) => (id) =>
+      favoriteState
+        ? state.favoriteImages.find((image) => image.id === id)
+        : state.images.find((image) => image.id === id),
   },
   mutations: {
     setImages(state, images) {

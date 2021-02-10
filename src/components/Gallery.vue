@@ -61,7 +61,7 @@ export default {
     flex-direction: column;
     justify-content: center;
 
-    @media screen and (min-width: 800px){
+    @media screen and (min-width: 800px) {
       flex-direction: row;
       flex-wrap: wrap;
     }

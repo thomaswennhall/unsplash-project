@@ -5,21 +5,23 @@
         <span class="material-icons icon close" @click="closeLightbox"
           >close_fullscreen
         </span>
-        <Favorite :imageObj="getImageObj"/>
-        <a class="material-icons icon" :href="getDownloadLink">download</a>
+        <Favorite :imageObj="getImageObj" />
+        <a class="material-icons icon" :href="getImageObj.links.download"
+          >download</a
+        >
       </div>
       <div class="image-container">
-        <img :src="getImage" alt="" />
+        <img :src="getImageObj.urls.regular" alt="" />
       </div>
       <div class="information-panel">
         <p>
-          Creator: {{ getImageCreator.first_name }}
-          {{ getImageCreator.last_name }}
+          Creator: {{ getImageObj.user.first_name }}
+          {{ getImageObj.user.last_name }}
         </p>
         <a
-          v-if="getImageCreator.portfolio_url"
+          v-if="getImageObj.user.portfolio_url"
           class="material-icons icon"
-          :href="getImageCreator.portfolio_url"
+          :href="getImageObj.user.portfolio_url"
           target="_blank"
           >link
         </a>
@@ -35,46 +37,48 @@
 </template>
 
 <script>
-import Favorite from '@/components/Favorite.vue'
+import Favorite from "@/components/Favorite.vue";
 
 export default {
   components: { Favorite },
   props: {
     images: {
-      type: Array
+      type: Array,
     },
     id: {
-      type: String
-    }
+      type: String,
+    },
   },
 
   data() {
     return {
-      imageIndex: 0
+      imageIndex: 0,
     };
   },
 
   computed: {
-    getImage() {
-      return this.images[this.imageIndex].urls.regular;
-    },
-
-    getDownloadLink() {
-      return this.images[this.imageIndex].links.download;
-    },
-
-    getImageCreator() {
-      return this.images[this.imageIndex].user;
-    },
-
     getImageObj() {
       return this.images[this.imageIndex]
-    }
+        ? this.images[this.imageIndex]
+        : this.setImageObj();
+    },
+    isArrayEmpty() {
+      return this.images.length !== 0;
+    },
   },
-
   methods: {
     closeLightbox() {
       this.$emit("closeLightbox");
+    },
+
+    setImageObj() {
+      if (this.isArrayEmpty) {
+        this.prevImage();
+      } else {
+        this.closeLightbox();
+        return { links: "", urls: "", user: "" };
+      }
+      return this.images[this.imageIndex];
     },
     nextImage() {
       if (this.imageIndex == this.images.length - 1) {
@@ -82,21 +86,25 @@ export default {
       } else {
         this.imageIndex++;
       }
-
     },
     prevImage() {
       if (this.imageIndex == 0) {
         this.imageIndex = this.images.length - 1;
+        if (this.images.length === 0) {
+          this.$destroy();
+        }
       } else {
         this.imageIndex--;
       }
-    }
+    },
   },
 
   created() {
-    const imageObj = this.images.find(obj => obj.id == this.id);
+    const imageObj = this.images.find((obj) => obj.id == this.id);
     this.imageIndex = this.images.indexOf(imageObj);
-  }
+    console.log("HELLO");
+    // this.imageIndex = this.id;
+  },
 };
 </script>
 
@@ -112,7 +120,7 @@ export default {
   display: grid;
   place-items: center;
 
-  a{
+  a {
     text-decoration: none;
   }
 
